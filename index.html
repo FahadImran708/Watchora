@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>document</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --text: #2b2d42;
+            --light: #f8f9fa;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            padding-top: 80px;
+        }
+        
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: white;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Logo */
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Desktop Menu */
+        .desktop-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .desktop-menu a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.2s ease;
+        }
+        
+        .desktop-menu a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .desktop-menu a:hover:after {
+            width: 100%;
+        }
+        
+        /* Mobile Toggle */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: var(--text);
+            cursor: pointer;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 320px;
+            height: 100vh;
+            background: white;
+            box-shadow: var(--shadow);
+            z-index: 1001;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+        }
+        
+        .mobile-menu-header {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .mobile-menu-content {
+            padding: 1rem 0;
+        }
+        
+        .menu-items {
+            list-style: none;
+        }
+        
+        .menu-item {
+            margin: 0.5rem 0;
+        }
+        
+        .menu-item a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .menu-item a i {
+            margin-right: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .menu-item a:hover {
+            background: rgba(67, 97, 238, 0.05);
+            color: var(--primary);
+        }
+        
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Menu Toggle States */
+        #menu-toggle {
+            display: none;
+        }
+        
+        #menu-toggle:checked ~ .mobile-menu {
+            left: 0;
+        }
+        
+        #menu-toggle:checked ~ .overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .desktop-menu {
+                display: none;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+        }
+        
+        /* Content */
+
+/* Back To Top Button */
+        #backToTopBtn {
+            position: fixed;
+            bottom: 40px;
+            right: 30px;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            background-color: #000;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none; /* hidden by default */
+            z-index: 999;
+          }
+
+#backToTopBtn i{
+    font-size: 30px;
+}
+
+#backToTopBtn:hover {
+  background-color: #444;
+}                    
+ 
+  /* First Section */
+
+    .img-content {
+      position: relative;
+      width: 100%;
+      height: 60vh;
+      overflow: hidden;
+    }
+
+    .img-content-img img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .img-content-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+      padding: 20px;
+      z-index: 2;
+    }
+
+    .img-content-text h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      color: #000;
+    }
+
+    .img-content-text p {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      color: #000;
+    }
+
+    .img-content-text a {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #fff;
+      color: #031313;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .img-content-text a:hover {
+      background-color: #ccc;
+    }
+
+    /* ----------- RESPONSIVE ----------- */
+    @media (max-width: 768px) {
+
+      .nav-links {
+       flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .nav-links.active {
+        display : flex;
+      }
+
+      .nav-links a {
+        background-color: #022020;
+        border-top: 1px solid #fff;
+        width: 100%;
+        text-align: center;
+        padding: 12px 0;
+      }
+
+      .img-content {
+        height: 50vh;
+      }
+
+      .img-content-text h1 {
+        font-size: 2rem;
+      }
+
+      .img-content-text p {
+        font-size: 1rem;
+      }
+
+      .img-content-text a {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .item {
+        font-size: 1rem;
+        margin: 0 15px;
+      }
+
+      .img-content {
+        height: 45vh;
+      }
+
+      .img-content-text h1 {
+        font-size: 1.5rem;
+      }
+
+      .img-content-text p {
+        font-size: 0.9rem;
+      }
+
+      .img-content-text a {
+        font-size: 0.85rem;
+        padding: 6px 14px;
+      }
+    } 
+
+    /* Second Section */
+
+    .our-best-sellers{
+        text-align: center;
+        font-size: 35px;
+        margin-top: 20px;
+        color: #000;
+        font-weight: bolder;
+    }
+
+       .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1300px;
+      margin: auto;
+     margin-left: 200px;
+     margin-right: 200px;
+     top: 40px;
+    }
+
+    .card {
+      background: #fff;
+      margin-top: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: 0.3s;
+      text-align: center;
+      padding-bottom: 15px;
+      height: 400px;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+
+    .card h3 {
+      margin: 10px 0 5px;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: bold;
+      color: #4a90e2;
+      margin: 8px 0;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      background: #4a90e2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #357ABD;
+    }
+
+    @media (max-width: 700px){
+        .cardBox1{
+            margin-left: 2px;
+        }
+        .cardBox2{
+            margin-left: 2px;
+        }
+    }
+
+    .card-btn{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+    } 
+
+    .button{
+        text-decoration: none;
+        color: #fff;
+        background-color: #000;
+        padding: 10px 20px;
+        font-size: 24px;
+        margin-bottom: 20px;
+        border-radius: 15px;
+        border: 2px solid #000;
+    }
+
+    /* Third Section */
+
+    .quality-content{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 50px;
+        text-align: center;
+        flex-wrap: wrap;
+    }
+    .quality-content video{
+        width: 45%;
+        margin-left: 20px;
+        height: 500px;
+        margin-bottom: 20px;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+    
+    .container3-text h2{
+        font-size: 30px;
+        width: 400px;
+        margin-left: 140px;
+    }
+    .container3-text p{
+        width: 400px;
+        line-height: 30px;
+        margin-left: 140px;
+        margin-bottom: 20px;
+    }
+    .container3-text a{
+        text-decoration: none;
+        background-color: #000;
+        padding: 10px 20px;
+        width: 50px;
+        margin-left: 140px;
+        color: #fff;
+        border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .quality-content{
+            flex-direction: column;
+        }
+        .container3-text h2{
+            margin-left: 0px;
+        }
+        .container3-text p{
+            margin-left: 0px;
+        }
+        .container3-text a{
+            margin-left: 0px;
+        }
+        .container3 video{
+            width: 80%;
+        }
+    }
+
+    /* Fourth Section */
+
+    .watches-content{
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .watchesBox1{
+        height: 350px;
+        width: 200px;
+        margin-left: 100px;
+        margin-bottom: 20px;
+        margin-top: 30px;
+        box-shadow: 20px 20px 20px 20px rgba(0, 0, 0, 0.3);
+        border-radius: 20px;
+    }
+
+    .watchesBox1:hover{
+      transition: all 0.3s ease-in-out;
+      transform: scale(1.05);
+    }
+
+    .watchesBox1 img{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 250px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .watchesBox1 a{
+        text-decoration: none;
+        color: #000;
+        font-size: 25px;
+        display: flex;
+        text-align: center;   
+        align-items: center;
+        justify-content: center;
+    }
+
+    .watchesBox1 p{
+        margin-left: 30px;
+    }
+
+    .watchesBox1 span{
+        margin-left: 10px;
+        font-size: 13px;
+        text-decoration: line-through;
+        text-decoration-thickness: 1.5px;
+    }
+
+    .watchesBox2{
+        height: 350px;
+        width: 200px;
+        margin-left: 100px;
+        margin-bottom: 20px;
+        margin-top: 30px;
+        box-shadow: 20px 20px 20px 20px rgba(0, 0, 0, 0.3);
+        border-radius: 20px;
+    }
+
+    .watchesBox2 img{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 250px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .watchesBox2:hover{
+      transition: all 0.3s ease-in-out;
+      transform: scale(1.05);
+    }
+
+    .watchesBox2 a{
+        text-decoration: none;
+        color: #000;
+        font-size: 25px;
+        display: flex;
+        text-align: center;   
+        align-items: center;
+        justify-content: center;
+    }
+
+    .watchesBox2 p{
+        margin-left: 30px;
+    }
+
+    .watchesBox2 span{
+        margin-left: 10px;
+        font-size: 13px;
+        text-decoration: line-through;
+        text-decoration-thickness: 1.5px;
+    }
+
+    .watchesBox3{
+        height: 350px;
+        width: 200px;
+        margin-left: 100px;
+        margin-bottom: 20px;
+        margin-top: 30px;
+        box-shadow: 20px 20px 20px 20px rgba(0, 0, 0, 0.3);
+        border-radius: 20px;
+    }
+
+    .watchesBox3:hover{
+      transition: all 0.3s ease-in-out;
+      transform: scale(1.05);
+    }
+
+    .watchesBox3 img{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 250px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .watchesBox3 a{
+        text-decoration: none;
+        color: #000;
+        font-size: 25px;
+        display: flex;
+        text-align: center;   
+        align-items: center;
+        justify-content: center;
+    }
+
+    .watchesBox3 p{
+        margin-left: 30px;
+    }
+
+    .watchesBox3 span{
+        margin-left: 10px;
+        font-size: 13px;
+        text-decoration: line-through;
+        text-decoration-thickness: 1.5px;
+    }
+
+    .watchesBox4{
+        height: 350px;
+        width: 200px;
+        margin-left: 100px;
+        margin-bottom: 20px;
+        margin-top: 30px;
+        box-shadow: 20px 20px 20px 20px rgba(0, 0, 0, 0.3);
+        border-radius: 20px;
+    }
+
+    .watchesBox4:hover{
+      transition: all 0.3s ease-in-out;
+      transform: scale(1.05);
+    }
+
+    .watchesBox4 img{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 250px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .watchesBox4 a{
+        text-decoration: none;
+        color: #000;
+        font-size: 25px;
+        display: flex;
+        text-align: center;   
+       align-items: center;
+       justify-content: center;
+    }
+
+    .watchesBox4 p{
+        margin-left: 30px;
+    }
+
+    .watchesBox4 span{
+        margin-left: 10px;
+        font-size: 13px;
+        text-decoration: line-through;
+        text-decoration-thickness: 1.5px;
+    }
+
+    .container4 h1,
+    .container5 h1,
+    .container6 h1{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 50px;
+        margin-bottom: 10px;
+    }
+
+    /* Footer Content */
+
+      footer {
+        background-color: #000;
+        height: 70vh;
+        width: 100%;
+        color: #fff;
+      }
+
+      .footer-content {
+        display: flex;
+      }
+
+      .footer-Quicklinks {
+        font-size: 1vw;
+      }
+
+      .footer-content h1 {
+        color: #fff;
+        margin-left: 2vw;
+        margin-bottom: 40px;
+        font-size: 30px;
+        padding-top: 10px;
+        cursor: pointer;
+      }
+
+      .footer-content h2 {
+        color: #fff;
+        font-size: 2vw;
+        padding-top: 10px;
+      }
+
+      .footer-content a {
+        display: flex;
+        padding-left: 30vw;
+        text-decoration: none;
+        color: #fff;
+        padding-bottom: 20px;
+        padding-top: 10px;
+      }
+
+      .footer-content a:hover {
+        transition: left 0.3s ease;
+      }
+
+      .footer-icons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+      }
+
+      .footer-icons a {
+        display: flex;
+        list-style: none;
+        margin-left: 20px;
+        text-decoration: none;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .footer-content a {
+        transform: scale(1.1);
+      }
+
+      .footer {
+        margin-top: 60px;
+        text-align: center;
+        font-size: 14px;
+        color: #777;
+      }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+              Watchora
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="desktop-menu">
+                <a href="index.html">Home</a>
+                <a href="catalog.html">Catalog</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            
+            <!-- Mobile Toggle -->
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="mobile-toggle">
+                <i class="ri-menu-line"></i>
+            </label>
+            
+            <!-- Mobile Menu -->
+            <div class="mobile-menu">
+                <div class="mobile-menu-header">
+                    <div class="logo">
+                        <i class="ri-leaf-fill"></i>
+                        Menu
+                    </div>
+                    <label for="menu-toggle" class="mobile-toggle">
+                        <i class="ri-close-line"></i>
+                    </label>
+                </div>
+                
+                <div class="mobile-menu-content">
+                    <ul class="menu-items">
+                        <li class="menu-item">
+                            <a href="index.html">
+                                <i class="ri-home-line"></i>
+                                Home
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="catalog.html">
+                                <i class="ri-store-2-line"></i>
+                                Catalog
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="contact.html">
+                                <i class="ri-contacts-line"></i>
+                                Contact
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Overlay -->
+            <div class="overlay"></div>
+        </div>
+    </nav>
+
+<!-- Back To Top button -->
+      <button onclick="scrollToTop()" id="backToTopBtn"><i class="ri-arrow-up-wide-fill"></i></button>
+
+
+<!-- First Section -->
+  <div class="container1">
+    <div class="img-content">
+      <div class="img-content-text">
+        <h1>Timeless Style</h1>
+        <p class="">8 billion people in the world, but only a few can get one</p>
+        <a href="catalog.html">SEE ALL</a>
+      </div>
+      <div class="img-content-img">
+          <img src="pictures/imgae001.png" alt="Watch Image" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Section -->
+
+  <div class="container2">
+      <h2 class="our-best-sellers">BestSellers</h2>
+<div class="grid">
+    <!-- Box 1 -->
+    <div class="card">
+      <a href="order.html?product=Arabic Black%20Watch">
+        <img src="pictures/imagenew1.webp" alt="Watch 1">
+      </a>
+      <h3>Arabic Black</h3>
+      <div class="price">$199</div>
+      <a href="order.html">
+        <button class="btn">Buy Now</button>
+      </a>
+    </div>
+
+    <!-- Box 2 -->
+    <div class="card">
+      <a href="order.html?product=Roman Black%20Watch">
+        <img src="pictures/imagenew2.webp" alt="Watch 2">
+      </a>
+      <h3>Roman Black</h3>
+      <div class="price">$249</div>
+      <a href="order.html">
+        <button class="btn" >Buy Now</button>
+      </a>
+    </div>
+
+    <!-- Box 3 -->
+    <div class="card">
+      <a href="order.html?product=Skeleton Edition%20Watch">
+        <img src="pictures/imagenew3.webp" alt="Watch 3">
+      </a>
+      <h3>Skeleton Limited Edition</h3>
+      <div class="price">$349</div>
+      <a href="order.html">
+        <button class="btn">Buy Now</button>
+      </a>
+    </div>
+
+  </div>
+  <div class="card-btn">
+        <a href="catalog.html" class="button">View all</a>        
+  </div>
+
+  <!-- Third Section -->
+
+  <div class="container3">
+        <div class="quality-content">
+            <video class="container3-video" src="Download.mp4" autoplay loop muted></video>
+            <div class="container3-text">
+                <h2>WHEN QUALITY MEETS ELEGANCE</h2>
+                <p>At, fahad watches, We belive time is more than moments it's an expression of style and precision. Our collection  features carefully crafted timepeces that blend classic sophitication with morden innovation. Whether for daily wear or special occasion, discover a watch that complements your individuality.</p>
+                <a href="#">TRY RISK FREE</a>
+            </div>
+        </div>
+  </div>
+
+  <!-- Fourth Section -->
+
+  <div class="container4">
+    <h1>Our Watches</h1>
+    <div class="watches-content">
+        <div class="watchesBox1">
+            <a href="order.html?product=Prestige%20Watch">
+            <img src="pictures/image10.webp" alt="">
+            </a>
+            <a href="#">Prestige</a>
+            <p>18,999.00 <span>25,900.00</span></p>
+        </div>
+        <div class="watchesBox2">
+            <a href="order.html?product=Ageless%20Merced">
+            <img src="pictures/image1.webp" alt="">
+            </a>
+            <a href="#">Ageless Merced</a>
+            <p>10,999.00 <span>17,900.00</span></p>
+          </div>
+          <div class="watchesBox3">
+            <a href="order.html?product=Wyndow%20Watch">
+            <img src="pictures/image2.webp" alt="">
+            </a>
+            <a href="#">Wyndow</a>
+            <p>14,900.00 <span>25,900.00</span></p>
+        </div>
+        <div class="watchesBox4">
+            <a href="order.html?product=Doroly%20Watch">
+            <img src="pictures/image3.webp" alt="">
+            </a>
+            <a href="#">Doroly 1.0</a>
+            <p>11,499.00 <span>25,900.00</span></p>
+        </div>
+    </div>
+  </div>
+  <div class="container5">
+    <h1>Classic Watches</h1>
+    <div class="watches-content">
+        <div class="watchesBox1">
+          <a href="order.html?product=Modicci%20Watch">
+            <img src="pictures/image4.webp" alt="">
+          </a>
+            <a href="#">Modicci</a>
+            <p>11,499.00 <span>25,900.00</span></p>
+        </div>
+        <div class="watchesBox2">
+          <a href="order.html?product=Spectrum%20Watch">
+            <img src="pictures/SV-9306_Cam001_M3.webp" alt="">
+          </a>
+            <a href="#">Spectrum</a>
+            <p>14,499.00 <span>25,900.00</span></p>
+        </div>
+        <div class="watchesBox3">
+          <a href="order.html?product=Royce%20Watch">
+            <img src="pictures/image11.webp" alt="">
+          </a>
+            <a href="#">Royce</a>
+            <p>10,349.00 <span>25,900.00</span></p>
+        </div>
+        <div class="watchesBox4">
+          <a href="order.html?product=Diesel%20Watch">
+            <img src="pictures/image7.webp" alt="">
+          </a>
+            <a href="#">Diesel</a>
+            <p>11,699.00 <span>14,900.00</span></p>
+        </div>
+    </div>
+  </div>
+
+  <div class="container6">
+    <h1>Golden Watches</h1>
+    <div class="watches-content">
+        <div class="watchesBox1">
+          <a href="order.html?product=Dragon%20Watch">
+            <img src="pictures/image8.webp" alt="">
+          </a>
+            <a href="#">Dragon</a>
+            <p>14,999.00 <span>19,999.00</span></p>
+        </div>
+        <div class="watchesBox2">
+          <a href="order.html?product=Elegant%20Watch">
+            <img src="pictures/image9.webp" alt="">
+          </a>
+            <a href="#">Elegant</a>
+            <p>10,999.00 <span>15,900.00</span></p>
+        </div>
+        
+        
+    </div>
+  </div>
+
+    <!-- Footer Content -->
+
+    <footer>
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h1>OurWatches</h1>
+        </div>
+        <div class="footer-Quicklinks">
+          <a href="#">
+            <h2>Quick links</h2>
+          </a>
+          <a href="contactinfo.html">Contact Information</a>
+          <a href="PrivacyPolicy.html">Privacy Policy</a>
+          <a href="Refund.html">Refund Policy</a>
+          <a href="Shipping.html">Shipping Policy</a>
+          <a href="Terms.html">Terms and Servies</a>
+        </div>
+      </div>
+      <div class="footer-icons">
+        <a href="#"><i class="ri-instagram-line"></i></a>
+        <a href="#"><i class="ri-youtube-fill"></i></a>
+        <a href="#"><i class="ri-tiktok-fill"></i></a>
+      </div>
+    </footer>
+
+
+   <script>
+    
+  // Back To Top Button
+       const btn = document.getElementById("backToTopBtn");
+
+  window.onscroll = function () {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+      btn.style.display = "block";
+    } else {
+      btn.style.display = "none";
+    }
+  };
+
+
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+  // End Back To Top Button
+  </script>
+    
+    
+</body>
+</html>

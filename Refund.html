@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <style>
+      :root {
+        --primary: #4361ee;
+        --secondary: #3f37c9;
+        --text: #2b2d42;
+        --light: #f8f9fa;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", system-ui, sans-serif;
+      }
+
+      body {
+        background-color: var(--light);
+        color: var(--text);
+        padding-top: 80px;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+      }
+
+      #backToTopBtn {
+        position: fixed;
+        bottom: 40px;
+        right: 30px;
+        padding: 10px 15px;
+        font-size: 16px;
+        border: none;
+        background-color: #000;
+        color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none; /* hidden by default */
+        z-index: 999;
+      }
+
+      #backToTopBtn i {
+        font-size: 30px;
+      }
+
+      #backToTopBtn:hover {
+        background-color: #444;
+      }
+
+      /* Navbar */
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: white;
+        box-shadow: var(--shadow);
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      /* Logo */
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Desktop Menu */
+      .desktop-menu {
+        display: flex;
+        gap: 2rem;
+      }
+
+      .desktop-menu a {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 500;
+        position: relative;
+        padding: 0.5rem 0;
+        transition: all 0.2s ease;
+      }
+
+      .desktop-menu a:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: width 0.3s ease;
+      }
+
+      .desktop-menu a:hover:after {
+        width: 100%;
+      }
+
+      /* Mobile Toggle */
+      .mobile-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.75rem;
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      /* Mobile Menu */
+      .mobile-menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 320px;
+        height: 100vh;
+        background: white;
+        box-shadow: var(--shadow);
+        z-index: 1001;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow-y: auto;
+      }
+
+      .mobile-menu-header {
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .mobile-menu-content {
+        padding: 1rem 0;
+      }
+
+      .menu-items {
+        list-style: none;
+      }
+
+      .menu-item {
+        margin: 0.5rem 0;
+      }
+
+      .menu-item a {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        color: var(--text);
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      .menu-item a i {
+        margin-right: 1rem;
+        font-size: 1.1rem;
+      }
+
+      .menu-item a:hover {
+        background: rgba(67, 97, 238, 0.05);
+        color: var(--primary);
+      }
+
+      /* Overlay */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      /* Menu Toggle States */
+      #menu-toggle {
+        display: none;
+      }
+
+      #menu-toggle:checked ~ .mobile-menu {
+        left: 0;
+      }
+
+      #menu-toggle:checked ~ .overlay {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* Responsive */
+      @media (max-width: 992px) {
+        .desktop-menu {
+          display: none;
+        }
+
+        .mobile-toggle {
+          display: block;
+        }
+      }
+
+     /* Footer Content */
+
+      footer {
+        background-color: #000;
+        height: 70vh;
+        width: 100%;
+        color: #fff;
+      }
+
+      .footer-content {
+        display: flex;
+      }
+
+      .footer-Quicklinks {
+        font-size: 1vw;
+      }
+
+      .footer-content h1 {
+        color: #fff;
+        margin-left: 2vw;
+        margin-bottom: 40px;
+        font-size: 30px;
+        padding-top: 10px;
+        cursor: pointer;
+      }
+
+      .footer-content h2 {
+        color: #fff;
+        font-size: 2vw;
+        padding-top: 10px;
+      }
+
+      .footer-content a {
+        display: flex;
+        padding-left: 30vw;
+        text-decoration: none;
+        color: #fff;
+        padding-bottom: 20px;
+        padding-top: 10px;
+      }
+
+      .footer-content a:hover {
+        transition: left 0.3s ease;
+      }
+
+      .footer-icons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+      }
+
+      .footer-icons a {
+        display: flex;
+        list-style: none;
+        margin-left: 20px;
+        text-decoration: none;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .footer-content a {
+        transform: scale(1.1);
+      }
+
+      .footer {
+        margin-top: 60px;
+        text-align: center;
+        font-size: 14px;
+        color: #777;
+      }
+    </style>
+
+    <button onclick="scrollToTop()" id="backToTopBtn">
+      <i class="ri-arrow-up-wide-fill"></i>
+    </button>
+
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">Watchora</div>
+
+        <!-- Desktop Menu -->
+        <div class="desktop-menu">
+          <a href="index.html">Home</a>
+          <a href="catalog.html">Catalog</a>
+          <a href="contact.html">Contact</a>
+        </div>
+
+        <!-- Mobile Toggle -->
+        <input type="checkbox" id="menu-toggle" />
+        <label for="menu-toggle" class="mobile-toggle">
+          <i class="ri-menu-line"></i>
+        </label>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+          <div class="mobile-menu-header">
+            <div class="logo">
+              <i class="ri-leaf-fill"></i>
+              Menu
+            </div>
+            <label for="menu-toggle" class="mobile-toggle">
+              <i class="ri-close-line"></i>
+            </label>
+          </div>
+
+          <div class="mobile-menu-content">
+            <ul class="menu-items">
+              <li class="menu-item">
+                <a href="index.html">
+                  <i class="ri-home-line"></i>
+                  Home
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="catalog.html">
+                  <i class="ri-store-2-line"></i>
+                  Catalog
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="contact.html">
+                  <i class="ri-contacts-line"></i>
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay"></div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+
+    <div class="container">
+      <h1>Refund Policy</h1>
+      <p><strong>Effective Date:</strong> August 3, 2025</p>
+
+      <p>
+        At <strong>OurWatches</strong>, customer satisfaction is our top
+        priority. If you're not fully satisfied with your purchase, we're here
+        to help.
+      </p>
+
+      <h2>1. Eligibility for Returns</h2>
+      <p>
+        You may request a return or exchange within <strong>14 days</strong> of
+        receiving your order if the product:
+      </p>
+      <ul>
+        <li>Is defective or damaged</li>
+        <li>Is the wrong item received</li>
+        <li>Is unused, in original packaging, and in resellable condition</li>
+      </ul>
+
+      <h2>2. Non-Returnable Items</h2>
+      <p>We do not accept returns for:</p>
+      <ul>
+        <li>Used or worn watches</li>
+        <li>Sale or clearance items</li>
+        <li>Customized or personalized products</li>
+      </ul>
+
+      <h2>3. How to Request a Return</h2>
+      <p>
+        To initiate a return, please contact our support team at
+        <strong>example@gmail.com</strong> with the following details:
+      </p>
+      <ul>
+        <li>Your full name and order number</li>
+        <li>Reason for return</li>
+        <li>Photos (if item is damaged or incorrect)</li>
+      </ul>
+
+      <p>Once approved, we will provide return shipping instructions.</p>
+
+      <h2>4. Refund Processing</h2>
+      <p>
+        Once we receive and inspect your returned item, we will notify you of
+        the approval or rejection of your refund.
+      </p>
+      <p>
+        If approved, a refund will be issued to your original payment method
+        within 7–10 business days.
+      </p>
+
+      <h2>5. Return Shipping</h2>
+      <p>
+        Customers are responsible for the cost of return shipping unless the
+        item arrived damaged or the wrong item was sent.
+      </p>
+
+      <h2>6. Exchanges</h2>
+      <p>
+        If you'd like to exchange your item for a different one, contact us to
+        check availability. Exchanges follow the same process as returns.
+      </p>
+
+      <h2>7. Contact Us</h2>
+      <p>If you have questions about this policy, please contact us at:</p>
+      <p>
+        Email: <strong>example@gmail.com</strong><br />
+        Location: <strong>United States, America</strong>
+      </p>
+
+      <div class="footer">&copy; 2025 OurWatches. All rights reserved.</div>
+    </div>
+
+       <!-- Footer Content -->
+
+    <footer>
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h1 onclick="location.href='index.html'">Watchora</h1>
+        </div>
+        <div class="footer-Quicklinks">
+          <a href="#">
+            <h2>Quick links</h2>
+          </a>
+          <a href="contactinfo.html">Contact Information</a>
+          <a href="PrivacyPolicy.html">Privacy Policy</a>
+          <a href="Refund.html">Refund Policy</a>
+          <a href="Shipping.html">Shipping Policy</a>
+          <a href="Terms.html">Terms and Servies</a>
+        </div>
+      </div>
+      <div class="footer-icons">
+        <a href="#"><i class="ri-instagram-line"></i></a>
+        <a href="#"><i class="ri-youtube-fill"></i></a>
+        <a href="#"><i class="ri-tiktok-fill"></i></a>
+      </div>
+    </footer>
+
+
+    <script>
+      function toggleMenu() {
+        document.getElementById("navLinks").classList.toggle("active");
+      }
+      const btn = document.getElementById("backToTopBtn");
+
+      // Show the button when user scrolls down 200px
+      window.onscroll = function () {
+        if (
+          document.body.scrollTop > 200 ||
+          document.documentElement.scrollTop > 200
+        ) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+
+      // Scroll to top when button is clicked
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Watch Collection</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #4361ee;
+        --secondary: #3f37c9;
+        --text: #2b2d42;
+        --light: #f8f9fa;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", system-ui, sans-serif;
+      }
+
+      body {
+        background-color: var(--light);
+        color: var(--text);
+        padding-top: 80px;
+      }
+
+      /* Navbar */
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: white;
+        box-shadow: var(--shadow);
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      /* Logo */
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Desktop Menu */
+      .desktop-menu {
+        display: flex;
+        gap: 2rem;
+      }
+
+      .desktop-menu a {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 500;
+        position: relative;
+        padding: 0.5rem 0;
+        transition: all 0.2s ease;
+      }
+
+      .desktop-menu a:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: width 0.3s ease;
+      }
+
+      .desktop-menu a:hover:after {
+        width: 100%;
+      }
+
+      /* Mobile Toggle */
+      .mobile-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.75rem;
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      /* Mobile Menu */
+      .mobile-menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 320px;
+        height: 100vh;
+        background: white;
+        box-shadow: var(--shadow);
+        z-index: 1001;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow-y: auto;
+      }
+
+      .mobile-menu-header {
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .mobile-menu-content {
+        padding: 1rem 0;
+      }
+
+      .menu-items {
+        list-style: none;
+      }
+
+      .menu-item {
+        margin: 0.5rem 0;
+      }
+
+      .menu-item a {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        color: var(--text);
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      .menu-item a i {
+        margin-right: 1rem;
+        font-size: 1.1rem;
+      }
+
+      .menu-item a:hover {
+        background: rgba(67, 97, 238, 0.05);
+        color: var(--primary);
+      }
+
+      /* Overlay */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      /* Menu Toggle States */
+      #menu-toggle {
+        display: none;
+      }
+
+      #menu-toggle:checked ~ .mobile-menu {
+        left: 0;
+      }
+
+      #menu-toggle:checked ~ .overlay {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* Responsive */
+      @media (max-width: 992px) {
+        .desktop-menu {
+          display: none;
+        }
+
+        .mobile-toggle {
+          display: block;
+        }
+      }
+
+      /* Back To Top Button */
+      
+      #backToTopBtn {
+        position: fixed;
+        bottom: 40px;
+        right: 30px;
+        padding: 10px 15px;
+        font-size: 16px;
+        border: none;
+        background-color: #000;
+        color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none; /* hidden by default */
+        z-index: 999;
+      }
+
+      #backToTopBtn i {
+        font-size: 30px;
+      }
+
+      #backToTopBtn:hover {
+        background-color: #444;
+      }
+
+      /* Content */
+
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        padding-top: 20px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        max-width: 1300px;
+        margin: auto;
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: 0.3s;
+        text-align: center;
+        padding-bottom: 15px;
+        height: 400px;
+      }
+
+      .card:hover {
+        transform: translateY(-6px);
+      }
+
+      .card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+      }
+
+      .card h3 {
+        margin: 10px 0 5px;
+        font-size: 18px;
+        color: #333;
+      }
+
+      .price {
+        font-size: 20px;
+        font-weight: bold;
+        color: #4a90e2;
+        margin: 8px 0;
+      }
+
+      .btn {
+        padding: 10px 16px;
+        background: #4a90e2;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+      }
+
+      .btn:hover {
+        background: #357abd;
+      }
+
+      /* Cart */
+      /* Cart */
+      .cart {
+        position: fixed;
+        right: 20px;
+        top: 80px; /* push cart below navbar */
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        width: 260px;
+        max-height: 350px;
+        overflow-y: auto;
+        z-index: 1000;
+      }
+
+      .cart h2 {
+        margin: 0 0 10px;
+        font-size: 18px;
+        text-align: center;
+      }
+
+      .cart ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .cart ul li {
+        font-size: 14px;
+        margin: 6px 0;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .remove-btn {
+        background: #ff4d4d;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 2px 6px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: 0.3s;
+      }
+
+      .remove-btn:hover {
+        background: #cc0000;
+      }
+
+      .total {
+        margin-top: 10px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      @media (max-width: 768px) {
+        .cart {
+          position: fixed;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: 10px;
+          top: auto;
+          width: 90%;
+          max-height: 45%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button onclick="scrollToTop()" id="backToTopBtn">
+      <i class="ri-arrow-up-wide-fill"></i>
+    </button>
+
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">Watchora</div>
+
+        <!-- Desktop Menu -->
+        <div class="desktop-menu">
+          <a href="index.html">Home</a>
+          <a href="catalog.html">Catalog</a>
+          <a href="contact.html">Contact</a>
+        </div>
+
+        <!-- Mobile Toggle -->
+        <input type="checkbox" id="menu-toggle" />
+        <label for="menu-toggle" class="mobile-toggle">
+          <i class="ri-menu-line"></i>
+        </label>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+          <div class="mobile-menu-header">
+            <div class="logo">
+              <i class="ri-leaf-fill"></i>
+              Menu
+            </div>
+            <label for="menu-toggle" class="mobile-toggle">
+              <i class="ri-close-line"></i>
+            </label>
+          </div>
+
+          <div class="mobile-menu-content">
+            <ul class="menu-items">
+              <li class="menu-item">
+                <a href="index.html">
+                  <i class="ri-home-line"></i>
+                  Home
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="catalog.html">
+                  <i class="ri-store-2-line"></i>
+                  Catalog
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="contact.html">
+                  <i class="ri-contacts-line"></i>
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay"></div>
+      </div>
+    </nav>
+
+    <h1>Watch Collection</h1>
+
+    <!-- Cart -->
+    <div class="cart">
+      <h2>🛒 Cart</h2>
+      <ul id="cart-items"></ul>
+      <div class="total">Total: $<span id="total">0</span></div>
+    </div>
+
+    <!-- Grid of Watches -->
+    <div class="grid">
+      <!-- Box 1 -->
+      <div class="card">
+        <a href="order.html?product=Elegant Silver%20Watch">
+          <img src="pictures/imagenew1.webp" alt="Watch 1" />
+        </a>
+        <h3>Elegant Silver Watch</h3>
+        <div class="price">$199</div>
+        <button class="btn" onclick="addToCart('Elegant Silver Watch', 199)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 2 -->
+      <div class="card">
+        <a href="order.html?product=Classic Leather%20Watch">
+          <img src="pictures/imagenew2.webp" alt="Watch 2" />
+        </a>
+        <h3>Classic Leather Watch</h3>
+        <div class="price">$249</div>
+        <button class="btn" onclick="addToCart('Classic Leather Watch', 249)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 3 -->
+      <div class="card">
+        <a href="order.html?product=Luxury Gold%20Watch">
+          <img src="pictures/imagenew3.webp" alt="Watch 3" />
+        </a>
+        <h3>Luxury Gold Watch</h3>
+        <div class="price">$349</div>
+        <button class="btn" onclick="addToCart('Luxury Gold Watch', 349)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 4 -->
+      <div class="card">
+        <a href="order.html?product=Sporty Chronograph%20Watch">
+          <img src="pictures/imagenew4.webp" alt="Watch 4" />
+        </a>
+        <h3>Sporty Chronograph</h3>
+        <div class="price">$299</div>
+        <button class="btn" onclick="addToCart('Sporty Chronograph', 299)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 5 -->
+      <div class="card">
+        <a href="order.html?product=Minimalist Silver%20Watch">
+          <img src="pictures/imagenew5.webp" alt="Watch 5" />
+        </a>
+        <h3>Minimalist Silver Watch</h3>
+        <div class="price">$179</div>
+        <button class="btn" onclick="addToCart('Minimalist Black Watch', 179)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 6 -->
+      <div class="card">
+        <a href="order.html?product=Modern%20SmartWatch">
+          <img src="pictures/imagenew6.webp" alt="Watch 6" />
+        </a>
+        <h3>Modern Smartwatch</h3>
+        <div class="price">$399</div>
+        <button class="btn" onclick="addToCart('Modern Smartwatch', 399)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 7 -->
+      <div class="card">
+        <a href="order.html?product=Rose Gold%20Watch">
+          <img src="pictures/imagenew7.webp" alt="Watch 7" />
+        </a>
+        <h3>Rose Gold Watch</h3>
+        <div class="price">$289</div>
+        <button class="btn" onclick="addToCart('Rose Gold Watch', 289)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 8 -->
+      <div class="card">
+        <a href="order.html?product=Vintage Pcket%20Watch">
+          <img src="pictures/imagenew8.webp" alt="Watch 8" />
+        </a>
+        <h3>Vintage Pocket Watch</h3>
+        <div class="price">$159</div>
+        <button class="btn" onclick="addToCart('Vintage Pocket Watch', 159)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 9 -->
+      <div class="card">
+        <a href="order.html?product=Digital Sport%20Watch">
+          <img src="pictures/imagenew9.webp" alt="Watch 9" />
+        </a>
+        <h3>Digital Sport Watch</h3>
+        <div class="price">$129</div>
+        <button class="btn" onclick="addToCart('Digital Sport Watch', 129)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 10 -->
+      <div class="card">
+        <a href="order.html?product=Luxury Diamond%20Watch">
+          <img src="pictures/imagenew10.webp" alt="Watch 10" />
+        </a>
+        <h3>Luxury Diamond Watch</h3>
+        <div class="price">$599</div>
+        <button class="btn" onclick="addToCart('Luxury Diamond Watch', 599)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 11 -->
+      <div class="card">
+        <a href="order.html?product=Stainless Steel%20Watch">
+          <img src="pictures/imagenew11.webp" alt="Watch 11" />
+        </a>
+        <h3>Stainless Steel Watch</h3>
+        <div class="price">$229</div>
+        <button class="btn" onclick="addToCart('Stainless Steel Watch', 229)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 12 -->
+      <div class="card">
+        <a href="order.html?product=Casual Nylon%20Watch">
+          <img src="pictures/imagenew12.webp" alt="Watch 12" />
+        </a>
+        <h3>Casual Nylon Watch</h3>
+        <div class="price">$89</div>
+        <button class="btn" onclick="addToCart('Casual Nylon Watch', 89)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 13 -->
+      <div class="card">
+        <a href="order.html?product=Smart Fitness%20Watch">
+          <img src="pictures/imagenew13.webp" alt="Watch 13" />
+        </a>
+        <h3>Smart Fitness Watch</h3>
+        <div class="price">$199</div>
+        <button class="btn" onclick="addToCart('Smart Fitness Watch', 199)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 14 -->
+      <div class="card">
+        <a href="order.html?product=Marine Diver%20Watch">
+          <img src="pictures/imagenew14.webp" alt="Watch 14" />
+        </a>
+        <h3>Marine Diver Watch</h3>
+        <div class="price">$349</div>
+        <button class="btn" onclick="addToCart('Marine Diver Watch', 349)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 15 -->
+      <div class="card">
+        <a href="order.html?product=Classic White Dial%20Watch">
+          <img src="pictures/imagenew15.webp" alt="Watch 15" />
+        </a>
+        <h3>Classic White Dial</h3>
+        <div class="price">$139</div>
+        <button class="btn" onclick="addToCart('Classic White Dial', 139)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 16 -->
+      <div class="card">
+        <a href="order.html?product=Skeleton Mechanical%20Watch">
+          <img src="pictures/imagenew16.webp" alt="Watch 16" />
+        </a>
+        <h3>Skeleton Mechanical</h3>
+        <div class="price">$459</div>
+        <button class="btn" onclick="addToCart('Skeleton Mechanical', 459)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 17 -->
+      <div class="card">
+        <a href="order.html?product=Luxury Platinum%20Watch">
+          <img src="pictures/imagenew17.webp" alt="Watch 17" />
+        </a>
+        <h3>Luxury Platinum</h3>
+        <div class="price">$799</div>
+        <button class="btn" onclick="addToCart('Luxury Platinum', 799)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 18 -->
+      <div class="card">
+        <a href="order.html?product=Brown Leather Strap%20Watch">
+          <img src="pictures/imagenew18.webp" alt="Watch 18" />
+        </a>
+        <h3>Brown Leather Strap</h3>
+        <div class="price">$169</div>
+        <button class="btn" onclick="addToCart('Brown Leather Strap', 169)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 19 -->
+      <div class="card">
+        <a href="order.html?product=Military Tactical%20Watch">
+          <img src="pictures/imagenew19.webp" alt="Watch 19" />
+        </a>
+        <h3>Military Tactical</h3>
+        <div class="price">$189</div>
+        <button class="btn" onclick="addToCart('Military Tactical', 189)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 20 -->
+      <div class="card">
+        <a href="order.html?product=Limited Edition%20Watch">
+          <img src="pictures/imagenew20.webp" alt="Watch 20" />
+        </a>
+        <h3>Limited Edition</h3>
+        <div class="price">$899</div>
+        <button class="btn" onclick="addToCart('Limited Edition', 899)">
+          Add to Cart
+        </button>
+      </div>
+
+      <!-- Box 21 -->
+      <div class="card">
+        <a href="order.html?product=Blue Dial Steel%20Watch">
+          <img src="pictures/imagenew21.webp" alt="Watch 21" />
+        </a>
+        <h3>Blue Dial Steel</h3>
+        <div class="price">$269</div>
+        <button class="btn" onclick="addToCart('Blue Dial Steel', 269)">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // nav links toggle
+
+      function toggleMenu() {
+        document.getElementById("navLinks").classList.toggle("active");
+      }
+
+      // back to top button
+
+      const btn = document.getElementById("backToTopBtn");
+
+      window.onscroll = function () {
+        if (
+          document.body.scrollTop > 200 ||
+          document.documentElement.scrollTop > 200
+        ) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      };
+
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+
+      let cart = [];
+
+      function addToCart(name, price) {
+        cart.push({ name, price });
+        renderCart();
+      }
+
+      function removeFromCart(i) {
+        cart.splice(i, 1);
+        renderCart();
+      }
+
+      function renderCart() {
+        const cartList = document.getElementById("cart-items");
+        const totalEl = document.getElementById("total");
+        cartList.innerHTML = "";
+        let total = 0;
+        cart.forEach((item, i) => {
+          cartList.innerHTML += `
+          <li>
+            ${item.name} - $${item.price}
+            <button class="remove-btn" onclick="removeFromCart(${i})">X</button>
+          </li>
+        `;
+          total += item.price;
+        });
+        totalEl.textContent = total;
+      }
+    </script>
+  </body>
+</html>

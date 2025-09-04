@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+</head>
+<body>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+         #backToTopBtn {
+  position: fixed;
+  bottom: 40px;
+  right: 30px;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  background-color: #000;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none; /* hidden by default */
+  z-index: 999;
+}
+
+#backToTopBtn i{
+    font-size: 30px;
+}
+
+#backToTopBtn:hover {
+  background-color: #444;
+}
+
+        
+
+        .marquee-content {
+  display: flex;
+  overflow: hidden;
+}
+
+.marquee-inner {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll-left 20s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+:root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --text: #2b2d42;
+            --light: #f8f9fa;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            padding-top: 80px;
+        }
+        
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: white;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Logo */
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Desktop Menu */
+        .desktop-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .desktop-menu a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.2s ease;
+        }
+        
+        .desktop-menu a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .desktop-menu a:hover:after {
+            width: 100%;
+        }
+        
+        /* Mobile Toggle */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: var(--text);
+            cursor: pointer;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 320px;
+            height: 100vh;
+            background: white;
+            box-shadow: var(--shadow);
+            z-index: 1001;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+        }
+        
+        .mobile-menu-header {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .mobile-menu-content {
+            padding: 1rem 0;
+        }
+        
+        .menu-items {
+            list-style: none;
+        }
+        
+        .menu-item {
+            margin: 0.5rem 0;
+        }
+        
+        .menu-item a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .menu-item a i {
+            margin-right: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .menu-item a:hover {
+            background: rgba(67, 97, 238, 0.05);
+            color: var(--primary);
+        }
+        
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Menu Toggle States */
+        #menu-toggle {
+            display: none;
+        }
+        
+        #menu-toggle:checked ~ .mobile-menu {
+            left: 0;
+        }
+        
+        #menu-toggle:checked ~ .overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .desktop-menu {
+                display: none;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+        }
+        
+    .contact-container1{
+        display: flex;
+        margin-top: 100px;
+        /* align-items: center; */
+        justify-content: center;
+        margin-bottom: 50px;
+    }
+     
+    .contact-text h1{
+        font-size: 50px;
+    }
+
+    .contact-text h5{
+        margin-bottom: 20px;
+        font-size: 20px;
+        font-weight: 100;
+        color: #000;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+
+/* Footer Content */
+
+      footer {
+        background-color: #000;
+        height: 70vh;
+        width: 100%;
+        color: #fff;
+      }
+
+      .footer-content {
+        display: flex;
+      }
+
+      .footer-Quicklinks {
+        font-size: 1vw;
+      }
+
+      .footer-content h1 {
+        color: #fff;
+        margin-left: 2vw;
+        margin-bottom: 40px;
+        font-size: 30px;
+        padding-top: 10px;
+        cursor: pointer;
+      }
+
+      .footer-content h2 {
+        color: #fff;
+        font-size: 2vw;
+        padding-top: 10px;
+      }
+
+      .footer-content a {
+        display: flex;
+        padding-left: 30vw;
+        text-decoration: none;
+        color: #fff;
+        padding-bottom: 20px;
+        padding-top: 10px;
+      }
+
+      .footer-content a:hover {
+        transition: left 0.3s ease;
+      }
+
+      .footer-icons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+      }
+
+      .footer-icons a {
+        display: flex;
+        list-style: none;
+        margin-left: 20px;
+        text-decoration: none;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .footer-content a {
+        transform: scale(1.1);
+      }
+
+      .footer {
+        margin-top: 60px;
+        text-align: center;
+        font-size: 14px;
+        color: #777;
+      }    
+    </style>
+
+    <button onclick="scrollToTop()" id="backToTopBtn"><i class="ri-arrow-up-wide-fill"></i></button>
+
+  <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                Watchora
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="desktop-menu">
+                <a href="index.html">Home</a>
+                <a href="catalog.html">Catalog</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            
+            <!-- Mobile Toggle -->
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="mobile-toggle">
+                <i class="ri-menu-line"></i>
+            </label>
+            
+            <!-- Mobile Menu -->
+            <div class="mobile-menu">
+                <div class="mobile-menu-header">
+                    <div class="logo">
+                        <i class="ri-leaf-fill"></i>
+                        Menu
+                    </div>
+                    <label for="menu-toggle" class="mobile-toggle">
+                        <i class="ri-close-line"></i>
+                    </label>
+                </div>
+                
+                <div class="mobile-menu-content">
+                    <ul class="menu-items">
+                        <li class="menu-item">
+                            <a href="index.html">
+                                <i class="ri-home-line"></i>
+                                Home
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="catalog.html">
+                                <i class="ri-store-2-line"></i>
+                                Catalog
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="contact.html">
+                                <i class="ri-contacts-line"></i>
+                                Contact
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Overlay -->
+            <div class="overlay"></div>
+        </div>
+    </nav>
+
+  <div class="contact-container1">
+    <div class="contact-content">
+        <div class="contact-text">
+            <h1>Contact Information</h1>
+            <h5>Trade name: Our Watches</h5>
+            <h5>Phone number: +92 xxxxxxxxx</h5>
+            <h5>Email: example@gmail.com</h5>
+            <h5>Physical Address: United State, America</h5>
+        </div>
+    </div>
+</div>
+
+      <!-- Footer Content -->
+
+    <footer>
+      <div class="footer-content">
+        <div class="footer-logo">
+            <h1 onclick="location.href='index.html'">Watchora</h1>
+        </div>
+        <div class="footer-Quicklinks">
+          <a href="#">
+            <h2>Quick links</h2>
+          </a>
+          <a href="contactinfo.html">Contact Information</a>
+          <a href="PrivacyPolicy.html">Privacy Policy</a>
+          <a href="Refund.html">Refund Policy</a>
+          <a href="Shipping.html">Shipping Policy</a>
+          <a href="Terms.html">Terms and Servies</a>
+        </div>
+      </div>
+      <div class="footer-icons">
+        <a href="#"><i class="ri-instagram-line"></i></a>
+        <a href="#"><i class="ri-youtube-fill"></i></a>
+        <a href="#"><i class="ri-tiktok-fill"></i></a>
+      </div>
+    </footer>
+
+
+
+  <script>
+    function toggleMenu() {
+      document.getElementById("navLinks").classList.toggle("active");
+    }
+       const btn = document.getElementById("backToTopBtn");
+
+  // Show the button when user scrolls down 200px
+  window.onscroll = function () {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+      btn.style.display = "block";
+    } else {
+      btn.style.display = "none";
+    }
+  };
+
+  // Scroll to top when button is clicked
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+  </script>
+
+</body>
+</html>
